@@ -81,7 +81,7 @@ The result of the search with a test image can be seen in the figure below (red 
 The image is searched with the following windows:
 
 * size 64x64 in lower half of the image
-* size 128x128 in lower half of the image
+* size 100x100 in lower half of the image
 
 As can be seen with the red boxes the analysis of the image also delivers some false detections. Therefore the detection result is not plotted directly. Instead a so called heatmap is generated which means that an array with the size of the test image is generated that is initialized with zero at all array positions. In regions where a car is detected the array value is increased by 2; if no car is detected the value is decreased by 1. The heatmap value is bounded between 0 and 15. Additionally a vertex with edges (250,720),(650,300), (1280,300), (1280,720) is used in order to reject detections to the left side of the track (as here quite a lot of detection errors occur). Only array positions greater then a certain threshold value are now actually considered as car detections. (All of this is defined in cell 17 of the notebook). The bounding boxes around the section of the heatmap are then found with the function "labels" from scipy.ndimage.measurements" and drawn with the function "draw_labeled_bboxes". The result can be seen in the left part of the image above
 
