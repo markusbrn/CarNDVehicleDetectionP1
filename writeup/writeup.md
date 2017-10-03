@@ -22,7 +22,7 @@ In order to train a classifier for the detection of cars from images a feature v
 
 * resize image to 64x64
 * color histogram
-* spatial color binning
+* spatial color binning (image is resized to 32x32)
 * histogram of gradients
 
 Each is described in the following.
@@ -69,7 +69,7 @@ As the "L" color channel already gives a good impression of the image shape, onl
 ---
 
 ##Selection and Training of Classifier
-In the following the classifier is trained. For this I am using the test images that are provided in the tutorial (the full set with 8792 car and 8968 nocar images). The images are transformed to LUV colorspace and the feature vector for each image is extracted with the methods described above. The feature vector is then normalized (cell 9 of jupyter notebook). The dataset is shuffled and split into training and test data (80% training data, 20% test data). Then a linear support vector classifier is trained with the training data (in cell 10 of the notebook). Validation with the test data set gives a prediction accuracy of 97.9%.
+In the following the classifier is trained. For this I am using the test images that are provided in the tutorial (the full set with 8792 car and 8968 nocar images). The images are transformed to LUV colorspace and the feature vector for each image is extracted with the methods described above. The feature vector is then normalized (cell 9 of jupyter notebook). The dataset is shuffled and split into training and test data (80% training data, 20% test data). Then a linear support vector classifier is trained with the training data (in cell 10 of the notebook). Validation with the test data set gives a prediction accuracy of 98.3%.
 
 
 ##Sliding Window Search
@@ -83,7 +83,7 @@ The image is searched with the following windows:
 * size 64x64 in lower half of the image
 * size 128x128 in lower half of the image
 
-As can be seen with the red boxes the analysis of the image also delivers some false detections. Therefore the detection result is not plotted directly. Instead a so called heatmap is generated which means that an array with the size of the test image is generated that is initialized with zero at all array positions. In regions where a car is detected the array value is increased by 2; if no car is detected the value is decreased by 1. The heatmap value is bounded between 0 and 15. Only array positions greater then a certain threshold value are now actually considered as car detections. (All of this is defined in cell 17 of the notebook). The bounding boxes around the section of the heatmap are then found with the function "labels" from scipy.ndimage.measurements" and drawn with the function "draw_labeled_bboxes". The result can be seen in the left part of the image above
+As can be seen with the red boxes the analysis of the image also delivers some false detections. Therefore the detection result is not plotted directly. Instead a so called heatmap is generated which means that an array with the size of the test image is generated that is initialized with zero at all array positions. In regions where a car is detected the array value is increased by 2; if no car is detected the value is decreased by 1. The heatmap value is bounded between 0 and 15. Additionally a vertex with edges (250,720),(650,300), (1280,300), (1280,720) is used in order to reject detections to the left side of the track (as here quite a lot of detection errors occur). Only array positions greater then a certain threshold value are now actually considered as car detections. (All of this is defined in cell 17 of the notebook). The bounding boxes around the section of the heatmap are then found with the function "labels" from scipy.ndimage.measurements" and drawn with the function "draw_labeled_bboxes". The result can be seen in the left part of the image above
 
 
 ## Video Implementation
